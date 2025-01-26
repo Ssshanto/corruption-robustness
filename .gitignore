@@ -1,3 +1,10 @@
+# Dataset
+caltech-101/
+
+# Results and weights and training splits
+results/
+splits/
+ 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
