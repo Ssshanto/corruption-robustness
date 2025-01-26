@@ -113,7 +113,7 @@ def evaluate_model(model, test_loader, device):
 
     return metrics
 
-def plot_corruption_analysis(metrics, output_dir):
+def plot_corruption_analysis(metrics, output_dir, SEED):
     """
     Create visualizations for model performance across corruptions and severity levels
 
