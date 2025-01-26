@@ -38,6 +38,7 @@ class Caltech101Dataset(Dataset):
         self.mode = mode
         self.transform = transform
 
+
         if split_file and os.path.exists(split_file):
             with open(split_file, 'r') as f:
                 self.splits = json.load(f)
@@ -213,17 +214,17 @@ if __name__ == '__main__':
     set_seeds(SEED)
     
     os.makedirs('splits', exist_ok=True)
-    split_file = f'../splits/{SEED}.json'
+    split_file = f'splits/{SEED}.json'
 
     standard_loaders = get_dataloaders(
-        root_dir="../caltech-101",
+        root_dir="caltech-101",
         mode='standard', 
         split_file=split_file,
         batch_size = 1024
     )
 
     contrastive_loaders = get_dataloaders(
-        root_dir="../caltech-101",
+        root_dir="caltech-101",
         mode='contrastive',
         split_file=split_file,
         batch_size = 1024

@@ -49,10 +49,12 @@ def main(args):
     print(f"Percentage of trainable parameters: {100 * trainable_params / total_params:.2f}%")
 
     # Get dataloaders
+    os.makedirs('splits', exist_ok=True)
     dataloaders = dataloader.get_dataloaders(
         root_dir=config['data_dir'],
         mode=config['data_mode'],
-        split_file=f"splits/{SEED}.json"
+        split_file=f"splits/{SEED}.json",
+        batch_size=config['batch_size']
     )
 
     # Define training parameters

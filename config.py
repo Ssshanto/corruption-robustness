@@ -8,6 +8,7 @@ def get_config(model_type):
         'device': torch.device('cuda' if torch.cuda.is_available() else 'cpu'),
         'num_classes': 102,
         'data_dir': 'caltech-101',
+        'batch_size': 8192,
         'data_mode': 'standard',
         'criterion': nn.CrossEntropyLoss(),
         'optimizer': optim.Adam,
