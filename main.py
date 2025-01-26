@@ -6,10 +6,21 @@ from utils import train, dataloader
 import evaluate
 import torch
 from models import alexnet
+import os
 
 # required parameters: epochs, seed, batchsize
 
 def main(args):
+    if not os.path.exists('caltech-101'):
+        print("Dataset does not exist: Downloading caltech-101.zip")
+        os.system('gdown 1-1qEvCfDf13M_K28tYCuyrfbKlLRBtU4')
+        print("Unzipping caltech-101.zip")
+        os.system('unzip -q caltech-101.zip')
+        print("Deleting caltech-101.zip")
+        os.system('rm -rf caltech-101.zip')
+    else:
+        print("Dataset directory already exists, skipping download")
+
     config = get_config(args.model)
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
