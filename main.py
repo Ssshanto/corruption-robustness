@@ -68,9 +68,8 @@ def main(args):
     model, history = train.train_model(model, dataloaders, criterion, optimizer, scheduler, args.epochs, device)     
 
     output_dir = config['output_dir']
-    # Evaluate the model
     print(f"\nEvaluating best {args.model} model...")
-    metrics = evaluate.evaluate_model(model, dataloaders['test'], f"{output_dir}/corruption_heatmap_{SEED}.png", device)
+    metrics = evaluate.test_model(model, dataloaders['test'], f"{output_dir}/corruption_heatmap_{SEED}.png", device)
 
     # Save training history and evaluation metrics
     results = {
@@ -78,24 +77,10 @@ def main(args):
         'evaluation_metrics': metrics
     }
 
-    output_dir = config['output_dir']
     with open(f"{output_dir}/training_results_{SEED}.json", 'w') as f:
         json.dump(results, f, indent=4)
     print(f"\nResults saved to {output_dir}/training_results_{SEED}.json")
 
-    # Evaluate the model on the test set
-    print(f"\nEvaluating {args.model} model on the test set...")
-    test_metrics = evaluate_model(model, dataloaders['test'])
-
-    # Save training history and evaluation metrics
-    results = {
-        'history': {k: [float(v) for v in vals] for k, vals in history.items()},
-        'test_metrics': test_metrics
-    }
-
-    with open(f"{output_dir}/training_results_{SEED}.json", 'w') as f:
-        json.dump(results, f, indent=4)
-    print(f"\nResults saved to {output_dir}/training_results_{SEED}.json")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train corruption robustness models')
