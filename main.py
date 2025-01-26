@@ -63,13 +63,13 @@ def main(args):
     optimizer = config['optimizer'](filter(lambda p: p.requires_grad, model.parameters()), **config['optimizer_params'])
     scheduler = config['scheduler'](optimizer, **config['scheduler_params'])
 
+    output_dir = config['output_dir']
+    os.makedirs(output_dir, exist_ok=True)
+
     # Train the model
     print(f"\nStarting {args.model} model training...")
 
-    model, history = train.train_model(model, dataloaders, criterion, optimizer, scheduler, args.epochs, device)     
-
-    output_dir = config['output_dir']
-    os.makedirs(output_dir, exist_ok=True)
+    model, history = train.train_model(model, dataloaders, criterion, optimizer, scheduler, args.epochs, device, output_dir, SEED)
 
     print(f"\nEvaluating best {args.model} model...")
     metrics = evaluate.test_model(model, dataloaders['test'], output_dir, SEED, device)

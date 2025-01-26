@@ -11,7 +11,7 @@ import torchvision.models as models
 import random
 
 def train_model(model, dataloaders, criterion, optimizer, scheduler=None,
-                num_epochs=25, device='cpu', save_path='best_model.pth'):
+                num_epochs=25, device='cpu', save_path, SEED):
     """
     Train the model and perform evaluation
 
@@ -106,9 +106,10 @@ def train_model(model, dataloaders, criterion, optimizer, scheduler=None,
             # Deep copy the model if best validation accuracy
             if phase == 'val' and epoch_acc > best_acc:
                 best_acc = epoch_acc
-                best_model_wts = copy.deepcopy(model.state_dict())
-                torch.save(best_model_wts, save_path)
-                print(f'Saved new best model with validation accuracy: {best_acc:.4f}')
+                if save_path is not None:
+                    best_model_wts = copy.deepcopy(model.state_dict())
+                    torch.save(best_model_wts, f"{save_path}/weights_{SEED}.pth")
+                    print(f'Saved new best model with validation accuracy: {best_acc:.4f}')
 
         # Step the scheduler if provided
         if scheduler is not None and phase == 'train':
