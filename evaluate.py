@@ -113,12 +113,13 @@ def evaluate_model(model, test_loader, device):
 
     return metrics
 
-def plot_corruption_analysis(metrics):
+def plot_corruption_analysis(metrics, output_dir):
     """
     Create visualizations for model performance across corruptions and severity levels
 
     Args:
         metrics: Dictionary containing evaluation metrics
+        output_dir: Directory to save the heatmap image
     """
     # 1. Plot per-corruption accuracies
     plt.figure(figsize=(15, 6))
@@ -160,7 +161,8 @@ def plot_corruption_analysis(metrics):
     plt.figure(figsize=(10, 8))
     sns.heatmap(pivot_table, annot=True, fmt='.1f', cmap='YlOrRd')
     plt.title('Accuracy Heatmap: Corruption Types vs Levels')
-    plt.show()
+    plt.savefig(output_dir)
+    plt.close()
 
     # Print summary statistics
     print("\nSummary Statistics:")
@@ -174,7 +176,7 @@ def plot_corruption_analysis(metrics):
     print("Worst performing corruption:",
           min(metrics['per_corruption_accuracy'].items(), key=lambda x: x[1])[0])
 
-def test_model(model, test_loader, device):
+def test_model(model, test_loader, output_dir, device):
     """
     Main function to test model and visualize results
 
@@ -186,7 +188,7 @@ def test_model(model, test_loader, device):
     print("Starting model evaluation...")
     metrics = evaluate_model(model, test_loader, device)
     print("\nGenerating performance visualizations...")
-    plot_corruption_analysis(metrics)
+    plot_corruption_analysis(metrics, output_dir)
     return metrics
 
 if __name__ == "__main__":

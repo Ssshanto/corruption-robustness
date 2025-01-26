@@ -65,9 +65,10 @@ def main(args):
 
     model, history = train.train_model(model, dataloaders, criterion, optimizer, scheduler, args.epochs, device)     
 
+    output_dir = config['output_dir']
     # Evaluate the model
     print(f"\nEvaluating best {args.model} model...")
-    metrics = evaluate.evaluate_model(model, dataloaders['test'])
+    metrics = evaluate.evaluate_model(model, dataloaders['test'], f"{output_dir}/corruption_heatmap_{SEED}.png", device)
 
     # Save training history and evaluation metrics
     results = {
@@ -90,7 +91,6 @@ def main(args):
         'test_metrics': test_metrics
     }
 
-    output_dir = config['output_dir']
     with open(f"{output_dir}/training_results_{SEED}.json", 'w') as f:
         json.dump(results, f, indent=4)
     print(f"\nResults saved to {output_dir}/training_results_{SEED}.json")
