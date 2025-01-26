@@ -5,7 +5,7 @@ from config import get_config
 from utils import train, dataloader
 import evaluate
 import torch
-from models import alexnet
+from models import alexnet, encdec
 import os
 
 # required parameters: epochs, seed, batchsize
@@ -34,8 +34,8 @@ def main(args):
     if args.model == 'alexnet':
         model = alexnet.load_and_prepare_model(config)
         print("Loading Model: AlexNet")
-    elif args.model == 'encoder_decoder':
-        model = encoder_decoder.load_and_prepare_model(config)
+    elif args.model == 'encdec':
+        model = encdec.load_and_prepare_model(config)
     elif args.model == 'mlp_aggregation':
         model = mlp_aggregation.load_and_prepare_model(config)
     else:
@@ -87,7 +87,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train corruption robustness models')
-    parser.add_argument('--model', type=str, default='alexnet', choices=['alexnet', 'encoder_decoder', 'mlp_aggregation', 'recurrent_mlp'],
+    parser.add_argument('--model', type=str, default='alexnet', choices=['alexnet', 'encdec', 'mlp_aggregation', 'recurrent_mlp'],
                         help='Model type to train')
     parser.add_argument('--epochs', type=int, default=10,
                         help='Number of training epochs')
