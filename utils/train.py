@@ -11,7 +11,7 @@ import torchvision.models as models
 import random
 
 def train_model(model, dataloaders, criterion, optimizer, scheduler=None,
-                num_epochs=25, device='cpu', save_path, SEED):
+                num_epochs=25, device='cpu', save_path=None, SEED=42):
     """
     Train the model and perform evaluation
 
