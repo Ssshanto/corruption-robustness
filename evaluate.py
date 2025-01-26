@@ -142,8 +142,8 @@ def plot_corruption_analysis(metrics, output_dir):
     plt.ylabel('Accuracy (%)')
     plt.title('Accuracy vs Corruption Level')
 
-    plt.tight_layout()
-    plt.show()
+    plt.savefig(f"{output_dir}/accuracy_v_corruption_{SEED}.png")
+    plt.close()
 
     # 3. Create heatmap for corruption-level combinations
     corruption_level_data = []
@@ -161,7 +161,7 @@ def plot_corruption_analysis(metrics, output_dir):
     plt.figure(figsize=(10, 8))
     sns.heatmap(pivot_table, annot=True, fmt='.1f', cmap='YlOrRd')
     plt.title('Accuracy Heatmap: Corruption Types vs Levels')
-    plt.savefig(output_dir)
+    plt.savefig(f"{output_dir}/corruption_heatmap_{SEED}.png")
     plt.close()
 
     # Print summary statistics
@@ -176,7 +176,7 @@ def plot_corruption_analysis(metrics, output_dir):
     print("Worst performing corruption:",
           min(metrics['per_corruption_accuracy'].items(), key=lambda x: x[1])[0])
 
-def test_model(model, test_loader, output_dir, device):
+def test_model(model, test_loader, output_dir, SEED, device):
     """
     Main function to test model and visualize results
 
@@ -188,7 +188,7 @@ def test_model(model, test_loader, output_dir, device):
     print("Starting model evaluation...")
     metrics = evaluate_model(model, test_loader, device)
     print("\nGenerating performance visualizations...")
-    plot_corruption_analysis(metrics, output_dir)
+    plot_corruption_analysis(metrics, output_dir, SEED)
     return metrics
 
 if __name__ == "__main__":

@@ -50,6 +50,7 @@ def main(args):
 
     # Get dataloaders
     os.makedirs('splits', exist_ok=True)
+
     dataloaders = dataloader.get_dataloaders(
         root_dir=config['data_dir'],
         mode=config['data_mode'],
@@ -68,8 +69,10 @@ def main(args):
     model, history = train.train_model(model, dataloaders, criterion, optimizer, scheduler, args.epochs, device)     
 
     output_dir = config['output_dir']
+    os.makedirs(output_dir, exist_ok=True)
+
     print(f"\nEvaluating best {args.model} model...")
-    metrics = evaluate.test_model(model, dataloaders['test'], f"{output_dir}/corruption_heatmap_{SEED}.png", device)
+    metrics = evaluate.test_model(model, dataloaders['test'], output_dir, SEED, device)
 
     # Save training history and evaluation metrics
     results = {
