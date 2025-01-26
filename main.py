@@ -9,6 +9,7 @@ from models import alexnet
 import os
 
 # required parameters: epochs, seed, batchsize
+# TODO: modify results to include seed, epoch-count
 
 def main(args):
     if not os.path.exists('caltech-101'):
@@ -32,6 +33,7 @@ def main(args):
 
     if args.model == 'alexnet':
         model = alexnet.load_and_prepare_model(config)
+        print("Loading Model: AlexNet")
     elif args.model == 'encoder_decoder':
         model = encoder_decoder.load_and_prepare_model(config)
     elif args.model == 'mlp_aggregation':
@@ -60,18 +62,8 @@ def main(args):
 
     # Train the model
     print(f"\nStarting {args.model} model training...")
-    model, history = train.train_model(model, dataloaders, criterion, optimizer, scheduler, args.epochs, device, f"{config['output_dir']}/best_model.pth")
 
-    # Load the best model
-
-    # if args.model == 'alexnet':
-    #     model, history = alexnet.train_model(model, dataloaders, criterion, optimizer, scheduler, **config['train_params'])
-    # elif args.model == 'encoder_decoder':
-    #     model, history = encoder_decoder.train_model(model, dataloaders, criterion, optimizer, scheduler, **config['train_params'])
-    # elif args.model == 'mlp_aggregation':
-    #     model, history = mlp_aggregation.train_model(model, dataloaders, criterion, optimizer, scheduler, **config['train_params'])
-    # else:
-    #     model, history = recurrent_mlp.train_model(model, dataloaders, criterion, optimizer, scheduler, **config['train_params'])
+    model, history = train.train_model(model, dataloaders, criterion, optimizer, scheduler, args.epochs, device)     
 
     # Evaluate the model
     print(f"\nEvaluating best {args.model} model...")
@@ -84,9 +76,9 @@ def main(args):
     }
 
     output_dir = config['output_dir']
-    with open(f"{output_dir}/training_results.json", 'w') as f:
+    with open(f"{output_dir}/training_results_{SEED}.json", 'w') as f:
         json.dump(results, f, indent=4)
-    print(f"\nResults saved to {output_dir}/training_results.json")
+    print(f"\nResults saved to {output_dir}/training_results_{SEED}.json")
 
     # Evaluate the model on the test set
     print(f"\nEvaluating {args.model} model on the test set...")
@@ -99,10 +91,9 @@ def main(args):
     }
 
     output_dir = config['output_dir']
-    with open(f"{output_dir}/training_results.json", 'w') as f:
+    with open(f"{output_dir}/training_results_{SEED}.json", 'w') as f:
         json.dump(results, f, indent=4)
-    print(f"\nResults saved to {output_dir}/training_results.json")
-
+    print(f"\nResults saved to {output_dir}/training_results_{SEED}.json")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train corruption robustness models')

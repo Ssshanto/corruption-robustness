@@ -8,6 +8,7 @@ import copy
 import numpy as np
 from tqdm import tqdm
 import torchvision.models as models
+import random
 
 def train_model(model, dataloaders, criterion, optimizer, scheduler=None,
                 num_epochs=25, device='cpu', save_path='best_model.pth'):
